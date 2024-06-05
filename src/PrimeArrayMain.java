@@ -2,18 +2,18 @@ import java.util.Random;
 
 public class PrimeArrayMain {
 // Initialisierung der Arrays
-	private static int[] primeArray = new int[100];
-	private static int[] numberArray = new int[100];
+	private static int[] primeArray = new int[1000];
+	private static int[] numberArray = new int[1000];
 	public static void main(String[] args) {
 		int primeAmount = 0;
 		Random rand = new Random();
 // Füllen des numberArrays mit zufälligen zahlen
 		for(int i = 0; i < numberArray.length; i++) {
-			numberArray[i] = rand.nextInt(1337) + 1;
+			numberArray[i] = rand.nextInt(1000) + 1;
 		}
-// Füllen des primeArrays mit Zahlen mithilfe der isPrime Methode
+// Füllen des primeArrays mithilfe der isPrime Methode und der isInArray Methode
 		for (int i = 0; i < numberArray.length; i++) {
-			if (isPrime(numberArray[i])) {
+			if (isPrime(numberArray[i]) && !isInArray(primeArray, primeAmount, numberArray[i])) {
 				primeArray[primeAmount++] = numberArray[i];
 			}
 		}
@@ -22,9 +22,7 @@ public class PrimeArrayMain {
 		int max = findMax(numberArray);
 // Ausgabe der Primzahlen
 		System.out.println("Es gibt " + primeAmount + " Primzahlen in diesem Array.");
-        for (int i = 0; i < primeAmount; i++) {
-            System.out.println(primeArray[i]);
-        }
+		displayPrimes(primeArray, primeAmount);
 // Ausgabe der größten und kleinsten Zahl im numberArray und der Anteil an geraden Zahlen
 		System.out.println("Der Anteil von geraden Zahlen beträgt: " + amountEven(numberArray) + "%");
 		System.out.println("Die kleinste Zahl in dem Array ist: " + min);
@@ -42,6 +40,31 @@ public class PrimeArrayMain {
 		}
 		return true;
 	}
+
+// Methode zur Überprüfung, ob eine Zahl bereits im Array ist
+private static boolean isInArray(int[] array, int length, int num) {
+	for (int i = 0; i < length; i++) {
+		if (array[i] == num) {
+			return true;
+		}
+	}
+	return false;
+}
+
+// Methode zur verbesserten Darstellung der Primzahlen
+private static void displayPrimes(int[] primes, int count) {
+	int primesPerLine = 10; // Anzahl der Primzahlen pro Zeile
+	for (int i = 0; i < count; i++) {
+		System.out.printf("%5d", primes[i]);
+		if ((i + 1) % primesPerLine == 0) {
+			System.out.println();
+		}
+	}
+	if (count % primesPerLine != 0) {
+		System.out.println(); // Zeilenumbruch, wenn die letzte Zeile nicht voll ist
+	}
+}
+
 // Methode zur berechnung des Anteils gerader Zahlen
 	private static double amountEven(int[] numberArray) {
 		int evenCount = 0;
